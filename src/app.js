@@ -1,16 +1,22 @@
 const express = require('express')
 const app = express()
-const { adminAuth } = require('./middlewares/auth')
-const { userAuth } = require('./middlewares/auth')
-app.use('/admin', adminAuth)
-app.get('/admin/getAllUserData', (req, res, next) => {
-    res.send('All user data')
+app.use('/', (err, req, res, next) => {
+    res.status(500).send('Something broke 1!')
 })
-app.get('/admin/deleteUser', (req, res, next) => {
-    res.send('User deleted')
+app.get('/user', (req, res, next) => {
+    // try {
+        throw new Error('User route error') 
+    // }
+    // catch (err) {
+        res.status(500).send('Something went wrong in user route')  
+    // }
+   
 })
-app.get('/user', userAuth, (req, res, next) => {
-res.send('User data')
+app.use('/', (err, req, res, next) => {
+    if (err) {
+        res.status(500).send('Something broke!')
+    }
+   
 })
 app.listen(7777, () => {
     console.log("Server is running on port 7777")
