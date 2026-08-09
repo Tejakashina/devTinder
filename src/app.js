@@ -4,12 +4,12 @@ app.use('/', (err, req, res, next) => {
     res.status(500).send('Something broke 1!')
 })
 app.get('/user', (req, res, next) => {
-    // try {
+    try {
         throw new Error('User route error') 
-    // }
-    // catch (err) {
+    }
+    catch (err) {
         res.status(500).send('Something went wrong in user route')  
-    // }
+    }
    
 })
 app.use('/', (err, req, res, next) => {
