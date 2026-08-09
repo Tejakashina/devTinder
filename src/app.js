@@ -1,14 +1,16 @@
 const express = require('express')
 const app = express()
-
-app.get('/user', (req, res, next) => {
-    console.log('Handling request 1')
-    // res.send('Response 1')
-    next()
+const { adminAuth } = require('./middlewares/auth')
+const { userAuth } = require('./middlewares/auth')
+app.use('/admin', adminAuth)
+app.get('/admin/getAllUserData', (req, res, next) => {
+    res.send('All user data')
 })
-app.get('/user', (req, res, next) => {
-    console.log('Handling request 2')
-    // next() 
+app.get('/admin/deleteUser', (req, res, next) => {
+    res.send('User deleted')
+})
+app.get('/user', userAuth, (req, res, next) => {
+res.send('User data')
 })
 app.listen(7777, () => {
     console.log("Server is running on port 7777")
