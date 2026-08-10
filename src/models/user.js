@@ -1,23 +1,46 @@
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     firstName: {
+        type: String,
+        required: true,
+        minLength:3
+    },
+    lastName: {
         type: String
     },
-      lastName: {
-        type: String
+    emailId: {
+        type: String,
+        unique: true,
+        required: true,
+        lowercase: true,
+        trim: true
     },
-        emailId: {
-        type: String
+    password: {
+        type: String,
+        required: true
     },
-          password: {
-        type: String
-    },
-            age: {
-        type: Number
+    age: {
+        type: Number,
+        min: 18
     },
     gender: {
+        type: String,
+        validate(value) {
+            if(!["male","female","others"].includes(value)) {
+                throw new Error("Gender must be either male, female or others")
+            }
+        }
+    },
+    photoUrl: {
         type: String
+    },
+    about: {
+        type: String,
+        default: "Hey there! I am using devTinder."
+    },
+    skills: {
+        type: [String]
     }
-            
-})
+
+}, { timestamps: true })
 module.exports = mongoose.model('User', userSchema)
