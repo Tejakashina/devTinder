@@ -31,10 +31,15 @@ app.get('/getUser', async (req, res) => {
   
 })
 //Update user API - PUT /updateUser - update a user in the database
-app.patch('/updateUser', async (req, res) => {
-    const userId = req.body.userId
+app.patch('/updateUser/:userId', async (req, res) => {
+    const userId = req.params?.userId
     const data = req.body
     try {
+        const ALLOWED_UPDATES = ['photoUrl', 'about', 'skills', 'age', 'gender']
+        const isUpdateAllowed = Object.keys(data).every((update) => ALLOWED_UPDATES.includes(update))
+        if (!isUpdateAllowed) {
+           throw new Error("Update not Allowed")
+        }
         const user = await User.findByIdAndUpdate(userId, data, { returnDocument: 'before', runValidators: true }) // Update user by ID in the database
         res.send("User updated successfully")
         console.log("Updated user:", user)

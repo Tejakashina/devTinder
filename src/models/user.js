@@ -39,7 +39,12 @@ const userSchema = new mongoose.Schema({
         default: "Hey there! I am using devTinder."
     },
     skills: {
-        type: [String]
+        type: [String],
+        validate(value) {
+            if (value.length > 5) {
+               throw new Error("Array should not exceed 5")
+           }
+       }
     }
 
 }, { timestamps: true })
