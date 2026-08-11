@@ -15,20 +15,20 @@ const userSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
         trim: true,
-        validate(value) {
-            if (!Validator.isEmail(value)) {
-                throw new Error("Invalid Email Adress " + value)
-            }
-        }
+        // validate(value) {
+        //     if (!Validator.isEmail(value)) {
+        //         throw new Error("Invalid Email Adress " + value)
+        //     }
+        // }
     },
     password: {
         type: String,
         required: true,
-        validate(value) {
-            if (!Validator.isStrongPassword(value)) {
-                throw new Error("Enter a Strong Password " + value)
-            }
-        }
+        // validate(value) {
+        //     if (!Validator.isStrongPassword(value)) {
+        //         throw new Error("Enter a Strong Password " + value)
+        //     }
+        // }
     },
     age: {
         type: Number,
