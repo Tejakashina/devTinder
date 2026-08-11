@@ -37,12 +37,13 @@ app.post('/login', async (req, res) => {
     try {
         const { emailId, password } = req.body
         const isUser = await User.findOne({ emailId: emailId })
+        console.log(isUser)
         if (!isUser) {
             throw new Error("Invaid Credentials")
         }
-        const isPasswordValid = await bycrypt.compare(password, isUser.password)
+        const isPasswordValid = await isUser.verifyPassword(password)
         if (isPasswordValid) {
-            const token = await jwt.sign({ _id: isUser._id }, "DEV@TINDER$391", {expiresIn:'7d'})
+            const token = await isUser.getJWT()
             res.cookie("token", token,{expires:new Date(Date.now() + 7 * 3600000) , httpOnly:true}) //1hr expiry
             res.send("Login succesful")
         }
@@ -67,7 +68,7 @@ app.get('/getUser', userAuth, async (req, res) => {
     }
 
 })
-app.get('/profile', userAuth, async (req, res) => {
+app.get('/getProfile', userAuth, async (req, res) => {
     try {
         const user = req.user
         res.send(user)
