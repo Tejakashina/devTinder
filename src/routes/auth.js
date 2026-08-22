@@ -18,7 +18,7 @@ authRouter.post('/signup', async (req, res) => {
             emailId,
             password: hashPassword
         })
-        await user.save()
+        await user.save() //User save into DB   
         res.send("User created successfully")
     }
     catch (err) {
@@ -30,7 +30,6 @@ authRouter.post('/login', async (req, res) => {
     try {
         const { emailId, password } = req.body
         const isUser = await User.findOne({ emailId: emailId })
-        console.log(isUser)
         if (!isUser) {
             throw new Error("Invaid Credentials")
         }
@@ -47,5 +46,10 @@ authRouter.post('/login', async (req, res) => {
     catch (err) {
         res.status(400).send("Error: " + err.message)
     }
+})
+authRouter.post('/logout', async (req, res) => {
+    res.cookie('token', null, {expires: new Date(Date.now()) })
+    // res.clearCookie('token')
+    res.send("Logout Succesfull")
 })
 module.exports = (authRouter)

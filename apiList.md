@@ -11,10 +11,8 @@ profileRouter
 -PATCH /profile/password
 
 connectionRequestRouter
--POST /request/send/intrested/:userId
--POST /request/send/ignored/:userId
--POST /request/review/accepted/:requestId
--POST /request/review/rejected/:requestId
+-POST /request/send/:status/:userId
+-POST /request/review/:status/:requestId
 
 -GET /user/connections
 -GET /user/requests
@@ -42,3 +40,19 @@ app.get('/getUser', userAuth, async (req, res) => {
     }
 
 })
+
+   const userId = req.params?.userId
+    const data = req.body
+    try {
+        const ALLOWED_UPDATES = ['photoUrl', 'about', 'skills', 'age', 'gender']
+        const isUpdateAllowed = Object.keys(data).every((update) => ALLOWED_UPDATES.includes(update))
+        if (!isUpdateAllowed) {
+            throw new Error("Update not Allowed")
+        }
+        const user = await User.findByIdAndUpdate(userId, data, { returnDocument: 'before', runValidators: true }) // Update user by ID in the database
+        res.send("User updated successfully")
+        console.log("Updated user:", user)
+    }
+    catch (err) {
+        res.status(400).send("Error Updating user: " + err.message)
+    }
