@@ -1,4 +1,4 @@
-const jwt = require('JsonWebToken')
+const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const userAuth = async (req, res, next) => {
     //Read the token from the req cookies,
@@ -7,7 +7,7 @@ const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies
         if (!token) {
-            throw new Error(" Token is not valid")
+           return res.status(401).send("Unauthorized")
         }
         const decodedMessage = await jwt.verify(token, "DEV@TINDER$391")
         const { _id } = decodedMessage

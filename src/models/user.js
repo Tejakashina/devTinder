@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Validator = require('validator')
-const jwt = require('JsonWebToken')
+const jwt = require('jsonwebtoken')
 const bycrypt = require('bcrypt')
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -51,11 +51,12 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
+        default: "https://geographyandyou.com/images/user-profile.png",
         validate(value) {
             if (!Validator.isURL(value)) {
-                throw new Error("Invalid Photo Url" + value)
+                throw new Error("Invalid Photo URL: " + value);
             }
-        }
+        },
     },
     about: {
         type: String,

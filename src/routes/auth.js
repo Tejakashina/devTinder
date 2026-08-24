@@ -37,7 +37,7 @@ authRouter.post('/login', async (req, res) => {
         if (isPasswordValid) {
             const token = await isUser.getJWT()
             res.cookie("token", token,{expires:new Date(Date.now() + 7 * 3600000) , httpOnly:true}) //1hr expiry
-            res.send("Login succesful")
+            res.send(isUser)
         }
         else {
             throw new Error("Invalid Credentials")
