@@ -3,6 +3,7 @@ const { userAuth } = require('../middlewares/auth')
 const requestRouter = express.Router()
 const connectionRequest = require('../models/connectionRequest')
 const user = require('../models/user')
+const sendEmailConnection = require('../utils/sendEmail')
 requestRouter.post('/request/send/:status/:toUserId', userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
@@ -35,6 +36,11 @@ requestRouter.post('/request/send/:status/:toUserId', userAuth, async (req, res)
             toUserId
         })
         const data = await connectionReq.save()
+        const emailResponse = await sendEmailConnection.run(
+            "A New Friend Request from " + req.user.firstName,
+            req.user.firstName + " is " + status + " in " + toUser.firstName
+        )
+        console.log(emailResponse)
         res.json({
             Message: `${req.user.firstName} is ${status} in ${toUser.firstName}`,
             data
