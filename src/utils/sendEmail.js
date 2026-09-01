@@ -17,11 +17,11 @@ const createSendEmailCommand = (toAddress, fromAddress,subject,body) => {
     
                 Html: {
                     Charset: "UTF-8",
-                    Data: `<h1>${body}</h1>`,
+                    Data: body,
                 },
                 Text: {
                     Charset: "UTF-8",
-                    Data: "This is the text format email",
+                    Data: body.replace(/<[^>]*>/g, ""),
                 },
             },
             Subject: {
@@ -35,15 +35,22 @@ const createSendEmailCommand = (toAddress, fromAddress,subject,body) => {
         ],
     });
 };
-const run = async (subject,body) => {
+const run = async (toAddress, subject, body) => {
+    console.log("Sending email to:", toAddress);
     const sendEmailCommand = createSendEmailCommand(
-        "kashinatejasri22@gmail.com",
+        toAddress,
         "noreply@tinderdev.in",
-        subject,body
+        subject,
+        body
     );
 
     try {
-        return await sesClient.send(sendEmailCommand);
+
+        const response = await sesClient.send(sendEmailCommand);
+
+        console.log("SES SUCCESS:", response);
+
+        return response;
     } catch (caught) {
         if (caught instanceof Error && caught.name === "MessageRejected") {
             const messageRejectedError = caught;

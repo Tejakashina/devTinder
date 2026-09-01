@@ -42,12 +42,22 @@ const userSchema = new mongoose.Schema({
             values: ["male", "female", "others"],
             message: `{VALUE} is not a valid Gender type`
             
-        }
+        },
+       
+        // validate(value) {
+        //     if (!Validator.isIn(value, ["male", "female",
         // validate(value) {
         //     if(!["male","female","others"].includes(value)) {
         //         throw new Error("Gender must be either male, female or others")
         //     }
         // }
+    },
+    isPremium: {
+        type: Boolean,
+        default: false
+    },
+    membershipType: {
+        type: String,
     },
     photoUrl: {
         type: String,

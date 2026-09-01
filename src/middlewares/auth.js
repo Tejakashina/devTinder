@@ -7,9 +7,9 @@ const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies
         if (!token) {
-           return res.status(401).send("Unauthorized")
+            return res.status(401).send("Unauthorized")
         }
-        const decodedMessage = await jwt.verify(token, process.env.JWT_SECRET_KEY )
+        const decodedMessage = await jwt.verify(token, process.env.JWT_SECRET_KEY)
         const { _id } = decodedMessage
         const user = await User.findById(_id)
         if (!user) {

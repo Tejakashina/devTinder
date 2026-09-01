@@ -21,6 +21,16 @@
 
 status:ignored, interested, accepted, rejected
 
+#scheduling cronjobs
+-installing node-cron
+-Learning cron expression syntax by - crontab.guru
+-schedule a job-//date fns npm to know abt dates easily
+-find all the unique emailId who got connection req in previous day
+-Send email
+-Explore queue mechanism to send bulk emails - npm bee and bull packages
+-Amazon SES bulk email sending
+-Make sendEmail function dynamics
+
 
 
 

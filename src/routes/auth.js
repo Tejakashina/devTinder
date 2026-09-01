@@ -3,6 +3,7 @@ const authRouter = express.Router()
 const { validateSignupData } = require('../utils/validator')
 const bycrypt = require('bcrypt')
 const User = require('../models/user')
+const sendEmail = require('../utils/sendEmail')
 //Signup API - POST /signup - create a new user in the database
 authRouter.post('/signup', async (req, res) => {
     //creating a new instance of the User model and saving it to the database
@@ -19,6 +20,23 @@ authRouter.post('/signup', async (req, res) => {
             password: hashPassword
         })
         const savedUser = await user.save() //User save into DB   
+        const emailResponse = await sendEmail.run(
+            savedUser.emailId,
+            "Welcome to DevTinder 🎉",
+            `
+        <h1>Welcome ${savedUser.firstName}!</h1>
+
+        <p>Your DevTinder account has been created successfully.</p>
+
+        <p>You can now login and connect with other developers.</p>
+
+        <br>
+
+        <p>Thanks,<br>
+        DevTinder Team</p>
+    `
+        )
+        console.log(emailResponse)
         const token = await savedUser.getJWT()
         res.cookie("token", token, { expires: new Date(Date.now() + 7 * 3600000), httpOnly: true }) 
         res.send({ message: "User created successfully" , data:savedUser})

@@ -37,9 +37,11 @@ requestRouter.post('/request/send/:status/:toUserId', userAuth, async (req, res)
         })
         const data = await connectionReq.save()
         const emailResponse = await sendEmailConnection.run(
+            toUser.emailId,
             "A New Friend Request from " + req.user.firstName,
-            req.user.firstName + " is " + status + " in " + toUser.firstName
-        )
+            `<h1>New Connection Request</h1>
+     <p>${req.user.firstName} is ${status} in ${toUser.firstName}.</p>`
+        );
         console.log(emailResponse)
         res.json({
             Message: `${req.user.firstName} is ${status} in ${toUser.firstName}`,
